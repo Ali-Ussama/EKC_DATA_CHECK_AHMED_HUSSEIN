@@ -28,6 +28,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+//import com.arcgismaps.ApiKey
+//import com.arcgismaps.ArcGISEnvironment
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment
 import com.esri.arcgisruntime.concurrent.ListenableFuture
 import com.esri.arcgisruntime.geometry.Point
@@ -36,6 +38,7 @@ import com.esri.arcgisruntime.geometry.Polyline
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer
 import com.esri.arcgisruntime.mapping.ArcGISMap
 import com.esri.arcgisruntime.mapping.Basemap
+import com.esri.arcgisruntime.mapping.BasemapStyle
 import com.esri.arcgisruntime.mapping.Viewpoint
 import com.esri.arcgisruntime.mapping.view.Graphic
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay
@@ -61,7 +64,6 @@ import com.sec.datacheck.checkdata.view.fragments.newUpdateFragement.NewUpdateFr
 import com.sec.datacheck.checkdata.view.utils.Utilities
 import com.sec.datacheck.databinding.ActivityMain2Binding
 import com.sec.datacheck.databinding.MapSelectPointBottomSheetBinding
-import kotlinx.android.synthetic.main.map_select_point_bottom_sheet.view.*
 import java.io.File
 import java.util.*
 import java.util.concurrent.ExecutionException
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SingleTapListene
     private var graphicsOverlay: GraphicsOverlay? = null
     private var drawGraphicLayer: GraphicsOverlay? = null
     private var selectedResult: OnlineQueryResult? = null
-    private var selectedMapType: Enums.MapType = Enums.MapType.GOOGLE_MAP
+    private var selectedMapType: Enums.MapType = Enums.MapType.DEFAULT_MAP
     private lateinit var baseMap: ArcGISMap
     private var pointCollection: PointCollection? = null
     private var pictureMarkerSymbol: PictureMarkerSymbol? = null
@@ -110,13 +112,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SingleTapListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main2)
-        bottomSheetBinding = DataBindingUtil.findBinding(binding.root.bottom_sheet)!!
+        bottomSheetBinding = DataBindingUtil.findBinding(binding.root.findViewById(R.id.bottom_sheet))!!
         init()
     }
 
     private fun init() {
         try {
             requestPermissions()
+            ArcGISRuntimeEnvironment.setApiKey("AAPK7ca109b667d5440e9c6fc1789dacb03bvpI9y48B0OOqQCKWWZvAtS1ik2TUAvn1Oq_bsMTO7wPvfne64Wa0gh9XM8WHdiOU")
             handleCompass()
             initSheetBehavior()
             initMap(selectedMapType)
@@ -234,6 +237,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SingleTapListene
                     Enums.SyncStatus.FAILED -> {
                         showToast(getString(R.string.sync_failed_retrying))
                     }
+
+                    else -> {}
                 }
             })
 
@@ -333,7 +338,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SingleTapListene
                     baseMap = ArcGISMap(basemap)
                 }
                 Enums.MapType.DEFAULT_MAP -> {
-                    baseMap = ArcGISMap(Basemap.createOpenStreetMap())
+                    baseMap = ArcGISMap(BasemapStyle.ARCGIS_STREETS)
                     baseMap.maxScale = 1.0
                 }
             }
