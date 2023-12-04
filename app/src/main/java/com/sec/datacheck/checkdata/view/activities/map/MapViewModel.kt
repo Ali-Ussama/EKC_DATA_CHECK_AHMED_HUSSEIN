@@ -66,7 +66,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     var selectedOfflineFeatureTable: GeodatabaseFeatureTable? = null
     var objectID: String? = null
     lateinit var mFileTemp: File
-    val databasePath = MutableLiveData<String>()
+    val databasePath = MutableLiveData<String?>()
     val syncStatus = MutableLiveData<Enums.SyncStatus>().apply {
         value = Enums.SyncStatus.STOPPED
     }
@@ -499,9 +499,9 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                 feature?.serviceFeatureTable?.loadAsync()
                 val fieldList: List<Field?>? = feature?.serviceFeatureTable?.fields
                 mFeature = feature?.feature!!
-                mFeature.loadAsync()
+                mFeature.refresh()
                 feature.serviceFeatureTable?.addDoneLoadingListener {
-                    mFeature.addDoneLoadingListener {
+//                    mFeature.addDoneLoadingListener {
                         if (!fieldList.isNullOrEmpty()) {
                             for (field in fieldList) {
                                 if (field != null && isValidField(field.name)) {
@@ -575,7 +575,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                                 fields.add(mFields)
                             }
                         }
-                    }
+//                    }
                 }
             } else {
                 feature?.geodatabaseFeatureTable?.loadAsync()
