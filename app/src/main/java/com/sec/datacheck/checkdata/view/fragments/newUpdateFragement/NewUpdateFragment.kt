@@ -29,7 +29,7 @@ import com.sec.datacheck.checkdata.view.fragments.updateFragment.UpdateFragment
 import com.sec.datacheck.checkdata.view.utils.Utilities
 import com.sec.datacheck.databinding.DefaultFeatureBinding
 import com.sec.datacheck.databinding.FragmentNewUpdateBinding
-import kotlinx.android.synthetic.main.default_feature.view.*
+//import kotlinx.android.synthetic.main.default_feature.view.*
 import java.io.File
 import java.io.IOException
 
@@ -48,7 +48,7 @@ class NewUpdateFragment : Fragment(), FeatureHeadClickListener, FeatureFieldClic
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_update, container, false)
-        defaultBinding = DataBindingUtil.findBinding(binding.root.new_update_feature_container)!!
+        defaultBinding = DataBindingUtil.findBinding(binding.root.findViewById(R.id.new_update_feature_container))!!
         return binding.root
     }
 

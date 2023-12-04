@@ -46,6 +46,7 @@
         <activity
             android:name=".splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|fontScale|navigation"
+            android:exported="true"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter android:label="singleInstance">
                 <action android:name="android.intent.action.MAIN" />
